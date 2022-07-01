@@ -20,6 +20,7 @@ header {
     flex-direction: row;
     justify-content: space-around;
     align-content: center;
+    border-radius: 0 0 20px 20px;
 }
 
 .header-item {
@@ -40,6 +41,8 @@ main {
     justify-content: center;
     align-content: center;
     color:darkslategrey;
+    border-radius: 20px;
+
 }
 
 body {
