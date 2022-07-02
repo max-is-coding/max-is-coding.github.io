@@ -23,10 +23,20 @@ header {
     border-radius: 0 0 20px 20px;
 }
 
-.header-item {
+.header-item, .top-button {
     width: 30%;
     margin: 0 auto;
+}
+
+.top-button {
+    color:darkslateblue;
+    font-size: 25px;
+}
+
+.header-item {
+    color: whitesmoke;
     font-size: 50px;
+    text-decoration: none;
 }
 
 main {
@@ -37,7 +47,7 @@ main {
     background-color: #a5d8d880;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-content: center;
     color:darkslategrey;
@@ -59,6 +69,19 @@ h1 {
     font-size: 35px;
 }
 
+h2 {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.about-page {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
 .about-blurb {
     width: 60%;
     margin: 0 auto;
@@ -76,6 +99,23 @@ h1 {
     align-content: center;
 }
 
+.blog-post {
+    width: 80%;
+    margin: auto;
+}
+
+.divider {
+    border-bottom: 4px solid whitesmoke;
+    margin: 2px 0;
+    clear: right;
+  }
+
+.sm-divider {
+    border-bottom: 2px solid whitesmoke;
+    margin: -3px;
+    clear: right;
+  }
+
 #peace {
     padding: 10px 0;
     border-radius: 50%;
@@ -83,19 +123,72 @@ h1 {
     height: auto;
 }
 
-p {
+.paintings {
+    border-radius: 20px;
+    border: 10px solid #fffacc ;
+    max-width: 100%;
+    height: auto;
+    box-sizing: border-box;
+}
+
+.blog-links {
+    width: 80%;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    
+}  
+
+.blog-links img {
+    opacity: 0.35;
+}
+
+.blog-links a {
+    color: black;
+}
+
+.link-pics {
+    border-radius: 20px;
+    border: 10px solid #fffacc ;
+    max-width: 100%;
+    height: auto;
+    box-sizing: border-box;
+}
+
+main p {
+    text-align: left;
+    font-size: 20px;
+    justify-content: center;
+    align-content: center;
+}
+
+.blog-category {
+    position: relative;
+    text-align: center;
+    width: 48%;
+    margin: 2px;
+}
+
+.image-title {
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    padding: 10px;
+}
+
+.image-title p {
+    font-size: 35px;
+    font-weight: bolder;
+}
+
+footer p {
+    text-align: center;
     font-size: 20px;
 }
 
-a {
-    color: whitesmoke;
-    text-decoration: none;
-}
-
-a:visited {
-    color: whitesmoke;
-    text-decoration: none;
-  }
 
 footer {
     background-color: #ffb2b2;
@@ -116,6 +209,19 @@ footer {
     margin-right: 30px;
 }
 
+
+@media (max-width: 1300px) {
+    .image-title p {
+        font-size: 28px;
+    }
+
+    .link-pics {
+        border-width: 5px;
+    }
+
+    
+}
+
 @media (max-width: 1100px) {
     .about-pic {
         min-width: 200px;
@@ -123,6 +229,20 @@ footer {
         align-items: center;
     }
 
+    .image-title p {
+        font-size: 22px;
+    }
+
+    .image-title {
+        position: absolute;
+        top: 5px;
+        left: 15px;
+        padding: 5px;
+    }
+
+    .link-pics {
+        border-width: 5px;
+    }
     
 }
 
@@ -155,6 +275,27 @@ footer {
         min-width: 200px;
     }
 
-    
+    .paintings {
+        border-width: 3px;
+    }
+
+    .link-pics {
+        border-width: 3px;
+    }
+
+    .image-title p {
+        font-size: 25px;
+    }
+
+    .image-title {
+        position: absolute;
+        top: -10px;
+        left: 15px;
+        padding: 5px;
+    }
+
+    .blog-category {
+        width: 100%;
+    }
 
 }
