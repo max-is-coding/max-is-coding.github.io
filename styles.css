@@ -209,6 +209,20 @@ footer {
     margin-right: 30px;
 }
 
+.value-quote {
+    text-align: center;
+    font-size: 15px;
+}
+
+.middle {
+    text-align: center;
+}
+
+a {
+    color:darkslateblue;
+    text-decoration: none;
+}
+
 
 @media (max-width: 1300px) {
     .image-title p {
@@ -219,6 +233,10 @@ footer {
         border-width: 5px;
     }
 
+    main {
+        flex-direction: column;
+        width: 85%;
+    }
     
 }
 
@@ -249,6 +267,7 @@ footer {
 @media (max-width: 800px) {
     main {
         flex-direction: column;
+        width: 95%;
     }
 
     .header-item {
