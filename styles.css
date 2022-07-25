@@ -156,6 +156,7 @@ h2 {
     max-width: 100%;
     height: auto;
     box-sizing: border-box;
+    object-fit: cover;
 }
 
 main p {
@@ -223,6 +224,84 @@ a {
     text-decoration: none;
 }
 
+.intro {
+    width: 80%;
+    margin: auto;
+}
+
+#game-start {
+    color:darkslateblue;
+    font-size: 50px;
+    margin: auto;
+    background-color: white;
+    
+}
+
+.game-area {
+    border: 1px dotted black ;
+    width: 800px;
+    height: 600px;
+    background-color: white;
+    margin: 10px auto;
+    position: relative;
+    overflow: hidden;
+}
+
+#game-title {
+    width: 700px;
+    height: auto;
+    margin: 10px auto;
+}
+
+#start-button {
+    width: 300px;
+    height: auto;
+    margin: 50px auto;
+}
+
+#barf-gif {
+    width: 72px;
+    height: 72px;
+    position: absolute;
+    top: 270px;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    z-index: 3;
+}
+
+#barf {
+    width: 72px;
+    height: 72px;
+    position: absolute;
+    left: 100px;
+    bottom: 100px;
+    z-index: 2;
+}
+
+
+#title-room {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+@keyframes chug {
+    0% {
+      transform: translateX(-100%);
+    }
+    25% {
+      transform: translateX(50vw);
+    }
+    75% {
+      transform: translateX(50vw);
+    }
+    100% {
+      transform: translateX(100vw);
+    }
+  }
 
 @media (max-width: 1300px) {
     .image-title p {
