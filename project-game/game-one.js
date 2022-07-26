@@ -193,14 +193,14 @@ function generateBaddies() {
             baddiesCount[i].classList.add("bad")
             gameScreen.append(baddiesCount[i])
 
-            if (i < 25) {
+            if (i < 15) {
                 spd = 1
-            } else if (i >= 25 && i < 50) {
-                spd = 0.8
+            } else if (i >= 15 && i < 40) {
+                spd = 0.7
             } else if (i >= 50 && i < 75) {
-                spd = 0.6
+                spd = 0.5
             } else {
-                spd = 0.4
+                spd = 0.3
             }            
 
             
@@ -210,7 +210,7 @@ function generateBaddies() {
                 //baddiesCount[i].remove()
             })
             i++
-            if (i < 100){
+            if (i < 150){
                 generateBaddies()
             }
 
@@ -243,33 +243,13 @@ function generateBaddies() {
         // if (baddyCount < 100) {
         //     generateBaddies()
         // }
-    }, (Math.floor(Math.random() * 2000 + 1000)))
+    }, (Math.floor(Math.random() * 500 + 1000)))
 }
 
 let enemies = document.querySelectorAll(".bad");
 
 // check for collisions... too much maths
-function checkCollision(){
-    let x_pos_sq_1 = Number((getComputedStyle(mrBarf).left).split("px")[0]) ;
-    let y_pos_sq_1 = Number((getComputedStyle(mrBarf).top).split("px")[0]);
 
-    let x_pos_sq_2 = Number((getComputedStyle(enemies).left).split("px")[0]) ;
-    let y_pos_sq_2 = Number((getComputedStyle(enemies).top).split("px")[0]);
-
-    let leftPos = x_pos_sq_1 + square_1_width > x_pos_sq_2 - square_2_width;
-    let rightPos = x_pos_sq_1 - square_1_width < x_pos_sq_2 + square_2_width;
-
-    let topPos = y_pos_sq_1 + square_1_height > y_pos_sq_2 - square_2_height;
-    let bottomPos = y_pos_sq_1 - square_1_height < y_pos_sq_2 + square_2_height;
-
-    if(leftPos && rightPos && topPos && bottomPos){
-        console.log("hit")
-    }
-    else{
-        // square_1.innerHTML = "";
-        // square_2.style.border = "none";
-    }
-}
 
 // function badApp() {
 
