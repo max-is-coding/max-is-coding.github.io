@@ -288,20 +288,20 @@ a {
     display: none;
 }
 
-@keyframes chug {
-    0% {
-      transform: translateX(-100%);
-    }
-    25% {
-      transform: translateX(50vw);
-    }
-    75% {
-      transform: translateX(50vw);
-    }
-    100% {
-      transform: translateX(100vw);
-    }
-  }
+#background {
+    height: 600px;
+    width: 100vw;
+    position: relative;
+    top: -38px;
+    animation: animatedBackground 4s linear infinite;
+    mask-repeat: repeat-x;
+}
+
+@keyframes animatedBackground {
+    from { transform: translateX(0); }
+    to { transform: translateX(-56.35%); }
+   }
+
 
 @media (max-width: 1300px) {
     .image-title p {
