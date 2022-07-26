@@ -12,8 +12,18 @@ let bgImg = document.createElement("img")
 bgImg.src = "./game-images/total-bg.png"
 bgImg.id = "background"
 
+let baddie = document.createElement("img")
+baddie.classList.add("enemy")
+let airBaddie = document.createElement("img")
+airBaddie.classList.add("airEnemy")
+
+
 let runWav = new Audio('./sounds/running.wav')
 let landWav = new Audio('./sounds/landing.wav')
+
+let topSlot = "200px"
+let btmSlot = "100px"
+let rightSlot = "-100px"
 
 startBtn.addEventListener("click", startGame)
 
@@ -27,6 +37,7 @@ function startGame() {
     $("#game-title").fadeOut("slow");
     barfGif.src = "./game-images/creature-2.png"
     titleBarfFalls()
+    checkCollision()
 }
 
 
@@ -64,7 +75,8 @@ function newGame() {
         left: "100px"
     }, 200, 'linear')
     gameScreen.append(bgImg)
-    bgImg.appendChild(bgImg);
+
+    generateBaddies()
 }
 
 function landSound() {
@@ -95,19 +107,193 @@ function titleBarfFalls () {
 }
 
 document.addEventListener("keydown", function(e) {
-    switch (e.key) {
-
-      case  "KeyW":
-        keys.up = true;
-        break;
-    }
+    barfJump()
 })
 
-document.addEventListener("keyup", function(e){
-    switch (e.key) {
+// document.addEventListener("keyup", function(e){
+//     barfFall()
+// })
 
-        case  `KeyW`:
-          keys.up = false;
-          break;
+
+function barfJump() {
+    $("#barf").animate({
+        bottom: 200
+    }, 200, 'swing', function(){
+        setTimeout(barfFall, 150)
+    })
+}
+
+function barfFall() {
+    $("#barf").animate({
+        bottom: 100
+    }, 250, 'swing')
+}
+
+// make baddies appear!
+    // run the function to randomise the baddy
+    // if it's a floor baddy, make it appear on the floor
+    // if it's an air baddy, put it in the air
+    // repeat!
+
+let airSp = {
+    visual: "enemy0.png",
+    speeds: 3000,
+    type: "airE"
+}
+
+let grSp = {
+    visual: "enemy3.gif",
+    speeds: 3000,
+    type: "grndE"
+}
+
+let wlkSp = {
+    visual: "enemy2.gif",
+    speeds: 2500,
+    type: "grndE"
+}
+
+let pnkSqu = {
+    visual: "enemy5.gif",
+    speeds: 2000,
+    type: "grndE"
+}
+
+let grnSqu = {
+    visual: "enemy4.gif",
+    speeds: 2500,
+    type: "grndE"
+}
+
+let bat = {
+    visual: "enemy1.gif",
+    speeds: 2500,
+    type: "airE"
+}
+
+let baddiesList = [airSp, grSp, wlkSp, pnkSqu, grnSqu, bat]
+
+let i = 0
+let x = 0
+let baddiesCount = []
+
+function generateBaddies() {
+    setTimeout(function() {
+       // badApp()
+        //console.log(baddyCount)
+
+        // loop it so baddies keep coming
+            // randomise the baddy
+            //
+
+            baddiesCount[i] = document.createElement("img")
+            baddyType = baddiesList[Math.floor(Math.random() * 6)]
+            baddiesCount[i].src = "./game-images/" + baddyType.visual
+            baddiesCount[i].classList.add(baddyType.type + "nemy")
+            baddiesCount[i].classList.add("bad")
+            gameScreen.append(baddiesCount[i])
+
+            if (i < 25) {
+                spd = 1
+            } else if (i >= 25 && i < 50) {
+                spd = 0.8
+            } else if (i >= 50 && i < 75) {
+                spd = 0.6
+            } else {
+                spd = 0.4
+            }            
+
+            
+            $("." + baddyType.type + "nemy").animate({
+                right: 800
+            }, (baddyType.speeds * spd), 'linear', function(){
+                //baddiesCount[i].remove()
+            })
+            i++
+            if (i < 100){
+                generateBaddies()
+            }
+
+
+
+
+
+        // if (baddyType >= 2 ){
+        //     baddie.src = "./game-images/enemy" + baddyType + apnd
+        //     gameScreen.append(baddie)
+        //     $(".enemy").animate({
+        //         right: 800
+        //     }, baddySpeed, 'linear', function(){
+        //         baddie.remove()
+        //         baddyCount++
+        //         baddie.style.right = "-50px"
+        //     })
+        // } else {
+        //     airBaddie.src = "./game-images/enemy" + baddyType + apnd
+        //     airBaddie.style.right = "-50px"
+        //     gameScreen.append(airBaddie)
+        //     $(".airEnemy").animate({
+        //         right: 800
+        //     }, baddySpeed, 'linear', function(){
+        //         airBaddie.remove()
+        //         baddyCount++
+        //         airBaddie.style.right = "-50px"
+        //     })
+        // }
+        // if (baddyCount < 100) {
+        //     generateBaddies()
+        // }
+    }, (Math.floor(Math.random() * 2000 + 1000)))
+}
+
+let enemies = document.querySelectorAll(".bad");
+
+// check for collisions... too much maths
+function checkCollision(){
+    let x_pos_sq_1 = Number((getComputedStyle(mrBarf).left).split("px")[0]) ;
+    let y_pos_sq_1 = Number((getComputedStyle(mrBarf).top).split("px")[0]);
+
+    let x_pos_sq_2 = Number((getComputedStyle(enemies).left).split("px")[0]) ;
+    let y_pos_sq_2 = Number((getComputedStyle(enemies).top).split("px")[0]);
+
+    let leftPos = x_pos_sq_1 + square_1_width > x_pos_sq_2 - square_2_width;
+    let rightPos = x_pos_sq_1 - square_1_width < x_pos_sq_2 + square_2_width;
+
+    let topPos = y_pos_sq_1 + square_1_height > y_pos_sq_2 - square_2_height;
+    let bottomPos = y_pos_sq_1 - square_1_height < y_pos_sq_2 + square_2_height;
+
+    if(leftPos && rightPos && topPos && bottomPos){
+        console.log("hit")
     }
-})
+    else{
+        // square_1.innerHTML = "";
+        // square_2.style.border = "none";
+    }
+}
+
+// function badApp() {
+
+//     if (baddyCount < 25) {
+//         spd = 2
+//     } else if (baddyCount >= 25 && baddyCount < 50) {
+//         spd = 1.7
+//     } else if (baddyCount >= 50 && baddyCount < 75) {
+//         spd = 1.3
+//     } else {
+//         spd = 1
+//     }
+
+//     // set different baddy speeds
+//     if (baddyType == 0 || baddyType == 3) {
+//         baddySpeed = 3000
+//     } else if (baddyType > 4) {
+//         baddySpeed = 750 * spd
+//     } else {
+//         baddySpeed = 1000 * spd
+//     }
+
+// }
+
+function barfDeath() {
+
+}

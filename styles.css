@@ -294,7 +294,23 @@ a {
     position: relative;
     top: -38px;
     animation: animatedBackground 4s linear infinite;
-    mask-repeat: repeat-x;
+    z-index: 0;
+}
+
+.grndEnemy {
+    bottom: 100px;
+}
+
+.airEnemy {
+    bottom: 180px;
+}
+
+.bad {
+    position: absolute;
+    height: 48px;
+    width: 48px;
+    right: -50px;
+    z-index: 3;
 }
 
 @keyframes animatedBackground {
