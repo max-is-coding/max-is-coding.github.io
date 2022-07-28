@@ -53,7 +53,7 @@ let btmSlot = "100px"
 let rightSlot = "-100px"
 
 startBtn.addEventListener("click", startGame)
-againTitle.addEventListener("click", newGame)
+againTitle.addEventListener("click", reloadGame)
 
 playBtn.addEventListener("click", loadIn)
 
@@ -70,7 +70,7 @@ function loadIn() {
         okWav.volume = 0.7
         okWav.play()
         $("#barf-gif").fadeIn(1500, function(){
-            $("#start-button").fadeIn(1500)
+            $("#start-button").fadeIn(500)
         })
     })
     introMusic()
@@ -84,8 +84,8 @@ function loadIn() {
     // move Barf into position
 
 function startGame() {
-    $("#start-button").fadeOut();
-    $("#game-title").fadeOut("slow");
+    $("#start-button").fadeOut("fast");
+    $("#game-title").fadeOut("fast");
     barfGif.src = "./game-images/creature-2.png"
     titleBarfFalls()
 }
@@ -120,8 +120,6 @@ function byeTitle() {
 }
 
 function newGame() {
-    $("#gOverT").fadeOut();
-    $("#againT").fadeOut();
     replayWav.pause()
     count = 0
     livesLost = 0
@@ -141,6 +139,14 @@ function newGame() {
     collisionCheck()
     removeBaddies()
     showHearts()
+    resetGameCounts()
+}
+
+function reloadGame() {
+    $("#gOverT").fadeOut();
+    $("#againT").fadeOut(function() {
+        newGame()
+    });
 }
 
 function landSound() {
@@ -200,29 +206,53 @@ function titleBarfFalls () {
     })
 }
 
-document.addEventListener("keydown", function(e) {
-    barfJump()
+let dblJump = false
+
+document.addEventListener("keydown", (e) => {
+    if (e.repeat) { return }
+    if (dblJump != false && e.key ==="w") {
+        barfTallJump()
+        dblJump = false
+        flightTime = 200
+      } else {
+        barfShortJump()
+        dblJump = true
+        dblJump = setTimeout('dblJump = false', 250);
+        flightTime = 150
+      }
+      if (e.key === "w"){
+      setTimeout(barfFall, (flightTime + 50))
+      }
 })
 
-// document.addEventListener("keyup", function(e){
-//     barfFall()
-// })
+let jumpTime = 0
 
 
-function barfJump() {
+function barfTallJump() {
     jumpSound()
+    jumpTime = 210
     $("#barf").animate({
         bottom: 250
-    }, 200, 'swing', function(){
-        setTimeout(barfFall, 50)
-    })
+    }, 200, 'swing')
+}
+
+function barfShortJump() {
+    jumpSound()
+    jumpTime = 160
+    $("#barf").animate({
+        bottom: 200
+    }, 150, 'swing')
 }
 
 function barfFall() {
     $("#barf").animate({
         bottom: 100
-    }, 210, 'swing')
-    setTimeout(groundSound, 260)
+    }, jumpTime, 'swing')
+    if (dblJump === true) {
+        setTimeout(groundSound, 260)
+    } else {
+        setTimeout(groundSound, 210)
+    }
 }
 
 // make baddies appear!
@@ -239,7 +269,7 @@ let airSp = {
 
 let grSp = {
     visual: "enemy3.gif",
-    speeds: 2500,
+    speeds: 2000,
     type: "grndE"
 }
 
@@ -272,6 +302,8 @@ let baddiesList = [airSp, grSp, wlkSp, pnkSqu, grnSqu, bat]
 let i = 0
 let x = 0
 let baddiesCount = []
+let gap1 = 1000
+let gap2 = 1000
 
 function generateBaddies() {
     if (gameOver) {
@@ -291,14 +323,30 @@ function generateBaddies() {
             baddiesCount[i].classList.add("bad")
             gameScreen.append(baddiesCount[i])
 
-            if (i < 15) {
+            if (i < 7) {
                 spd = 1
-            } else if (i >= 15 && i < 40) {
-                spd = 0.7
-            } else if (i >= 50 && i < 75) {
+                gap1 = 900
+                gap2 = 800
+            } else if (i >= 7 && i < 15) {
+                spd = 0.8
+                gap1 = 800
+                gap2 = 700
+            } else if (i >= 15 && i < 30) {
+                spd = 0.65
+                gap1 = 700
+                gap2 = 600
+            } else if (i >= 30 && i < 60) {
+                spd = 0.6
+                gap1 = 600
+                gap2 = 500
+            } else if (i >= 60 && i < 120) {
+                spd = 0.55
+                gap1 = 500
+                gap2 = 400
+            } else if (i >= 120) {
                 spd = 0.5
-            } else {
-                spd = 0.3
+                gap1 = 400
+                gap2 = 300
             }  
             
 
@@ -312,7 +360,7 @@ function generateBaddies() {
             }
             count++
             document.getElementById('score').innerHTML = count.toString()
-    }, (Math.floor(Math.random() * 500 + 700)))
+    }, (Math.floor(Math.random() * gap1 + gap2)))
 }
 }
 
@@ -349,7 +397,25 @@ function collisionCheck() {
         owWav.currentTime = 0
         owWav.volume = 0.7
         owWav.play()
-        count -= 5
+        switch(count){
+            case 4:
+                count -= 4;
+                break;
+            case 3:
+                count -= 3;
+                break;
+            case 2:
+                count -= 2;
+                break;
+            case 1:
+                count -= 1;
+                break;
+            case 0:
+                count = 0;
+                break; 
+            default:
+             count -= 5
+        }
         $("#jumpBarf").attr("src", "./game-images/creature-hit.gif")
         setTimeout(resetHit, 1000)
         setTimeout(collisionCheck, 1000)
@@ -430,8 +496,14 @@ function replayScreen() {
     $("#againT").fadeIn()
     replayWav.currentTime = 0
     replayWav.play()
-    reaplyWav.volume = 0.8
+    replayWav.volume = 0.8
     replayWav.loop = true
-    baddiesCount = []
+}
+
+function resetGameCounts() {
     i = 0
+    spd = 1
+    gap1 = 900
+    gap2 = 800
+    baddiesCount = []
 }
