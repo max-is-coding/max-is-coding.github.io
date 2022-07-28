@@ -120,6 +120,9 @@ function byeTitle() {
 }
 
 function newGame() {
+    resetGameCounts()
+    document.getElementById("score").style.right = "35px"
+    document.getElementById("score").style.top = "-30px"
     replayWav.pause()
     count = 0
     livesLost = 0
@@ -139,11 +142,11 @@ function newGame() {
     collisionCheck()
     removeBaddies()
     showHearts()
-    resetGameCounts()
 }
 
 function reloadGame() {
-    $("#gOverT").fadeOut();
+    $("#gOverT").fadeOut()
+    $("#score").fadeOut()
     $("#againT").fadeOut(function() {
         newGame()
     });
@@ -214,7 +217,7 @@ document.addEventListener("keydown", (e) => {
         barfTallJump()
         dblJump = false
         flightTime = 200
-      } else {
+      } else if (e.key ==="w") {
         barfShortJump()
         dblJump = true
         dblJump = setTimeout('dblJump = false', 250);
@@ -305,6 +308,8 @@ let baddiesCount = []
 let gap1 = 1000
 let gap2 = 1000
 
+let highscoreList = []
+
 function generateBaddies() {
     if (gameOver) {
         $(".airEnemy").hide()
@@ -371,18 +376,17 @@ function collisionCheck() {
     if (gameOver) {
         
     } else {
-    console.log(baddiesCount)
     baddiesCount.forEach((enem, index) => {
     let barfPos = mrBarf.getBoundingClientRect()
     let baddiePos = baddiesCount[index].getBoundingClientRect()
 
-    if ((baddiePos.top > barfPos.top && baddiePos.top < (barfPos.bottom - 20))||((baddiePos.bottom + 20) > barfPos.top && baddiePos.bottom < barfPos.bottom)) {
+    if ((baddiePos.top > barfPos.top && baddiePos.top < (barfPos.bottom - 17))||((baddiePos.bottom + 17) > barfPos.top && baddiePos.bottom < barfPos.bottom)) {
         verticalMatch = true
       } else{
         verticalMatch = false
       }
       
-      if ((baddiePos.right > (barfPos.left + 20) && baddiePos.right < barfPos.right)||(baddiePos.left < (barfPos.right - 20) && baddiePos.left > barfPos.left)) {
+      if ((baddiePos.right > (barfPos.left + 17) && baddiePos.right < barfPos.right)||(baddiePos.left < (barfPos.right - 17) && baddiePos.left > barfPos.left)) {
         horizontalMatch = true
       } else {
         horizontalMatch = false
@@ -391,7 +395,6 @@ function collisionCheck() {
       if (horizontalMatch && verticalMatch && addNew){
         // let intersect = true
         addNew = false
-        console.log("hit!")
         owNoise = Math.floor(Math.random() * 3)
         let owWav = new Audio('./sounds/ow' + owNoise +'.wav')
         owWav.currentTime = 0
@@ -436,11 +439,10 @@ function collisionCheck() {
               
           }
 
-        heartLost.style.display = "none"
+        heartLost.src = "./game-images/empty-heart.png"
         livesLost++
       } else {
         // let intersect = false
-        console.log("nope")
       }
      })
      setTimeout(collisionCheck, 100)
@@ -466,10 +468,16 @@ function showHearts () {
     gameScreen.append(heart0)
     gameScreen.append(heart1)
     gameScreen.append(heart2)
+    $(".hearts").fadeIn()
+    for (i = 0; i < 3; i++) {
+        $("#hrt" + i).attr("src", "./game-images/heart.png")
+    }
+
 }
 
 function barfDeath() {
     gameOver = true
+    $(".hearts").fadeOut()
     $("#jumpBarf").attr("src", "./game-images/creature-hit.gif")
     $("#barf").animate({
         bottom: 150
@@ -492,8 +500,11 @@ function barfDeath() {
 function replayScreen() {
     gameScreen.append(gameOverTitle)
     gameScreen.append(againTitle)
+    document.getElementById("score").style.right = "360px"
+    document.getElementById("score").style.top = "220px"
     $("#gOverT").fadeIn()
     $("#againT").fadeIn()
+    $("#score").fadeIn()
     replayWav.currentTime = 0
     replayWav.play()
     replayWav.volume = 0.8
@@ -501,6 +512,7 @@ function replayScreen() {
 }
 
 function resetGameCounts() {
+    document.getElementById('score').innerHTML = "0"
     i = 0
     spd = 1
     gap1 = 900
