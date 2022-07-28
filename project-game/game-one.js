@@ -396,7 +396,7 @@ function collisionCheck() {
       if (horizontalMatch && verticalMatch && addNew){
         // let intersect = true
         addNew = false
-        owNoise = Math.floor(Math.random() * 3)
+        owNoise = Math.floor(Math.random() * 6)
         let owWav = new Audio('./sounds/ow' + owNoise +'.wav')
         owWav.currentTime = 0
         owWav.volume = 0.7
