@@ -101,7 +101,7 @@ function barfAppears () {
 function barfRunAni() {
     $("#jumpBarf").attr("src", "./game-images/creature-run.gif")
     $("#barf").animate({
-        left: 900
+        left: 450
     }, 1500, 'swing')
     setTimeout(runSound, 50)
     setTimeout(byeTitle, 1500)
@@ -118,17 +118,17 @@ function byeTitle() {
 
 function newGame() {
     resetGameCounts()
-    document.getElementById("score").style.right = "35px"
-    document.getElementById("score").style.top = "-30px"
+    document.getElementById("score").style.right = "18px"
+    document.getElementById("score").style.top = "-22px"
     replayWav.pause()
     count = 0
     livesLost = 0
     gameOver = false
     $("#score").fadeIn()
-    mrBarf.style.left = "-50px"
-    mrBarf.style.bottom = "100px"
+    mrBarf.style.left = "-25px"
+    mrBarf.style.bottom = "50px"
     $("#barf").animate({
-        left: "100px"
+        left: "50px"
     }, 200, 'linear')
     gameScreen.append(bgImg)
     $("#background").fadeIn()
@@ -149,7 +149,7 @@ function reloadGame() {
     $("#againT").fadeOut()
     barfAgain()
     $("#barf").animate({
-        left: "-100px"
+        left: "-50px"
     }, 1000, 'linear', function(){
         mrBarf.style.transform = "scaleX(1)"
         $("#score").fadeOut()
@@ -160,8 +160,8 @@ function reloadGame() {
 }
 
 function barfAgain() {
-    mrBarf.style.left = "1000px"
-    mrBarf.style.bottom = "100px"
+    mrBarf.style.left = "500px"
+    mrBarf.style.bottom = "50px"
     mrBarf.style.transform = "scaleX(-1)"
 }
 
@@ -208,13 +208,13 @@ function introMusic() {
 
 function titleBarfFalls () {
     $("#barf-gif").animate({
-        top: 1400
+        top: 500
     }, 500, 'swing', function (){
         barfGif.style.right = "264px"
-        barfGif.style.top = "-1000px"
+        barfGif.style.top = "-500px"
         $("#title-room").fadeIn("3000")
         $("#barf-gif").animate({
-            top: 427
+            top: 213
         }, 700, 'swing', function(){
             $("#barf-gif").hide()
             barfAppears()
@@ -224,22 +224,37 @@ function titleBarfFalls () {
 
 let dblJump = false
 
-document.addEventListener("keydown", (e) => {
+gameScreen.addEventListener('touchstart', (e) => {
     if (e.repeat) { return }
-    if (dblJump != false && e.key ==="w") {
-        barfTallJump()
-        dblJump = false
-        flightTime = 200
-      } else if (e.key ==="w") {
-        barfShortJump()
-        dblJump = true
-        dblJump = setTimeout('dblJump = false', 250);
-        flightTime = 150
-      }
-      if (e.key === "w"){
-      setTimeout(barfFall, (flightTime + 80))
-      }
-})
+    if (dblJump != false) {
+    barfTallJump()
+    dblJump = false
+    flightTime = 200
+  } else {
+    barfShortJump()
+    dblJump = true
+    dblJump = setTimeout('dblJump = false', 250);
+    flightTime = 150
+  }
+  setTimeout(barfFall, (flightTime + 80))
+  });
+
+// document.addEventListener("keydown", (e) => {
+//     if (e.repeat) { return }
+//     if (dblJump != false && e.key ==="w") {
+//         barfTallJump()
+//         dblJump = false
+//         flightTime = 200
+//       } else if (e.key ==="w") {
+//         barfShortJump()
+//         dblJump = true
+//         dblJump = setTimeout('dblJump = false', 250);
+//         flightTime = 150
+//       }
+//       if (e.key === "w"){
+//       setTimeout(barfFall, (flightTime + 80))
+//       }
+// })
 
 let jumpTime = 0
 
@@ -248,7 +263,7 @@ function barfTallJump() {
     jumpSound()
     jumpTime = 230
     $("#barf").animate({
-        bottom: 250
+        bottom: 125
     }, 200, 'swing')
 }
 
@@ -256,13 +271,13 @@ function barfShortJump() {
     jumpSound()
     jumpTime = 180
     $("#barf").animate({
-        bottom: 200
+        bottom: 100
     }, 150, 'swing')
 }
 
 function barfFall() {
     $("#barf").animate({
-        bottom: 100
+        bottom: 50
     }, jumpTime, 'swing')
     if (dblJump === true) {
         setTimeout(groundSound, 280)
@@ -370,7 +385,7 @@ function generateBaddies() {
 
             
             $("." + baddyType.type + "nemy").animate({
-                right: 800
+                right: 400
             }, (baddyType.speeds * spd), 'linear')
             i++
             if (i < 500){
@@ -393,13 +408,13 @@ function collisionCheck() {
     let barfPos = mrBarf.getBoundingClientRect()
     let baddiePos = baddiesCount[index].getBoundingClientRect()
 
-    if ((baddiePos.top > barfPos.top && baddiePos.top < (barfPos.bottom - 20))||((baddiePos.bottom + 20) > barfPos.top && baddiePos.bottom < barfPos.bottom)) {
+    if ((baddiePos.top > barfPos.top && baddiePos.top < (barfPos.bottom - 10))||((baddiePos.bottom + 10) > barfPos.top && baddiePos.bottom < barfPos.bottom)) {
         verticalMatch = true
       } else{
         verticalMatch = false
       }
       
-      if ((baddiePos.right > (barfPos.left + 20) && baddiePos.right < barfPos.right)||(baddiePos.left < (barfPos.right - 20) && baddiePos.left > barfPos.left)) {
+      if ((baddiePos.right > (barfPos.left + 10) && baddiePos.right < barfPos.right)||(baddiePos.left < (barfPos.right - 10) && baddiePos.left > barfPos.left)) {
         horizontalMatch = true
       } else {
         horizontalMatch = false
@@ -493,14 +508,14 @@ function barfDeath() {
     $(".hearts").fadeOut()
     $("#jumpBarf").attr("src", "./game-images/creature-hit.gif")
     $("#barf").animate({
-        bottom: 150
+        bottom: 75
     }, 500, 'swing', function(){
         overWav.currentTime = 0
         overWav.volume = 0.8
         overWav.play()
         lvlWav.pause()
         $("#barf").animate({
-            bottom: -100
+            bottom: -50
         }, 600, 'swing', function(){
             $("#background").fadeOut()
             $("#score").fadeOut()
@@ -513,8 +528,8 @@ function barfDeath() {
 function replayScreen() {
     gameScreen.append(gameOverTitle)
     gameScreen.append(againTitle)
-    document.getElementById("score").style.right = "360px"
-    document.getElementById("score").style.top = "220px"
+    document.getElementById("score").style.right = "180px"
+    document.getElementById("score").style.top = "110px"
     $("#gOverT").fadeIn()
     $("#againT").fadeIn()
     $("#score").fadeIn()
