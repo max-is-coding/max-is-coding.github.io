@@ -146,11 +146,27 @@ function newGame() {
 }
 
 function reloadGame() {
-    $("#gOverT").fadeOut()
-    $("#score").fadeOut()
-    $("#againT").fadeOut(function() {
-        newGame()
+    let barfNoise = Math.floor(Math.random() * 7)
+    let restartWav = new Audio('./sounds/barfnoise' + barfNoise + '.wav')
+    restartWav.currentTime = 0
+    setTimeout(restartWav.play(), 500)
+    $("#againT").fadeOut()
+    barfAgain()
+    $("#barf").animate({
+        left: "-100px"
+    }, 1000, 'linear', function(){
+        mrBarf.style.transform = "scaleX(1)"
+        $("#score").fadeOut()
+        $("#gOverT").fadeOut(function() {
+            newGame()
     });
+    })
+}
+
+function barfAgain() {
+    mrBarf.style.left = "1000px"
+    mrBarf.style.bottom = "100px"
+    mrBarf.style.transform = "scaleX(-1)"
 }
 
 function landSound() {
@@ -225,7 +241,7 @@ document.addEventListener("keydown", (e) => {
         flightTime = 150
       }
       if (e.key === "w"){
-      setTimeout(barfFall, (flightTime + 50))
+      setTimeout(barfFall, (flightTime + 80))
       }
 })
 
@@ -234,7 +250,7 @@ let jumpTime = 0
 
 function barfTallJump() {
     jumpSound()
-    jumpTime = 210
+    jumpTime = 230
     $("#barf").animate({
         bottom: 250
     }, 200, 'swing')
@@ -242,7 +258,7 @@ function barfTallJump() {
 
 function barfShortJump() {
     jumpSound()
-    jumpTime = 160
+    jumpTime = 180
     $("#barf").animate({
         bottom: 200
     }, 150, 'swing')
@@ -253,9 +269,9 @@ function barfFall() {
         bottom: 100
     }, jumpTime, 'swing')
     if (dblJump === true) {
-        setTimeout(groundSound, 260)
+        setTimeout(groundSound, 280)
     } else {
-        setTimeout(groundSound, 210)
+        setTimeout(groundSound, 230)
     }
 }
 
@@ -381,13 +397,13 @@ function collisionCheck() {
     let barfPos = mrBarf.getBoundingClientRect()
     let baddiePos = baddiesCount[index].getBoundingClientRect()
 
-    if ((baddiePos.top > barfPos.top && baddiePos.top < (barfPos.bottom - 17))||((baddiePos.bottom + 17) > barfPos.top && baddiePos.bottom < barfPos.bottom)) {
+    if ((baddiePos.top > barfPos.top && baddiePos.top < (barfPos.bottom - 20))||((baddiePos.bottom + 20) > barfPos.top && baddiePos.bottom < barfPos.bottom)) {
         verticalMatch = true
       } else{
         verticalMatch = false
       }
       
-      if ((baddiePos.right > (barfPos.left + 17) && baddiePos.right < barfPos.right)||(baddiePos.left < (barfPos.right - 17) && baddiePos.left > barfPos.left)) {
+      if ((baddiePos.right > (barfPos.left + 20) && baddiePos.right < barfPos.right)||(baddiePos.left < (barfPos.right - 20) && baddiePos.left > barfPos.left)) {
         horizontalMatch = true
       } else {
         horizontalMatch = false
@@ -401,25 +417,25 @@ function collisionCheck() {
         owWav.currentTime = 0
         owWav.volume = 0.7
         owWav.play()
-        switch(count){
-            case 4:
-                count -= 4;
-                break;
-            case 3:
-                count -= 3;
-                break;
-            case 2:
-                count -= 2;
-                break;
-            case 1:
-                count -= 1;
-                break;
-            case 0:
-                count = 0;
-                break; 
-            default:
-             count -= 5
-        }
+        // switch(count){
+        //     case 4:
+        //         count -= 4;
+        //         break;
+        //     case 3:
+        //         count -= 3;
+        //         break;
+        //     case 2:
+        //         count -= 2;
+        //         break;
+        //     case 1:
+        //         count -= 1;
+        //         break;
+        //     case 0:
+        //         count = 0;
+        //         break; 
+        //     default:
+        //      count -= 5
+        // }
         $("#jumpBarf").attr("src", "./game-images/creature-hit.gif")
         setTimeout(resetHit, 1000)
         setTimeout(collisionCheck, 1000)
