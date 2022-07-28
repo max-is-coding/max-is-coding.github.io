@@ -75,6 +75,7 @@ function loadIn() {
     })
     introMusic()
     gameScreen.style.visibility = "visible"
+    playBtn.style.display = "none"
 }
 
 
