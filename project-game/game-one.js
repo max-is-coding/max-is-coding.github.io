@@ -367,8 +367,8 @@ function generateBaddies() {
                 gap2 = 400
             } else if (i >= 120) {
                 spd = 0.5
-                gap1 = 400
-                gap2 = 300
+                gap1 = 500
+                gap2 = 400
             }  
             
 
