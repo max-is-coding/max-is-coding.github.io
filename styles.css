@@ -297,6 +297,17 @@ a {
     image-rendering: pixelated;
 }
 
+#volumeBtn {
+    height: 75px;
+    width: 75px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: none;
+    image-rendering: pixelated;
+    z-index: 5;
+}
+
 #background {
     height: 600px;
     width: 250%;
@@ -419,6 +430,17 @@ a {
 }
 
 @media (max-width: 800px) {
+
+    #volumeBtn {
+        height: 38px;
+        width: 38px;
+        position: absolute;
+        bottom: 5px;
+        left: 5px;
+        display: none;
+        image-rendering: pixelated;
+        z-index: 5;
+    }
 
     #jumpBarf {
         height: 36px;

@@ -5,6 +5,7 @@ const titleRoom = document.getElementById("title-room")
 const barfGif = document.getElementById("barf-gif")
 const gameScreen = document.getElementsByClassName("game-area")[0]
 const mrBarf = document.getElementById("barf")
+const volBtn = document.getElementById("volumeBtn")
 let barfImg = document.createElement("img")
 barfImg.src = "./game-images/creature-2.png"
 barfImg.id = "jumpBarf"
@@ -47,13 +48,16 @@ let lvlWav = new Audio('./sounds/music2.mp3')
 let okWav = new Audio('./sounds/okay2.wav')
 let overWav = new Audio('./sounds/gameover.wav')
 let replayWav = new Audio('./sounds/music1.mp3')
+let groundWav = new Audio()
+let jumpWav = new Audio()
+let owWav = new Audio()
+let restartWav = new Audio()
 
 startBtn.addEventListener("click", startGame)
 againTitle.addEventListener("click", reloadGame)
-
 playBtn.addEventListener("click", loadIn)
 
-let gameOver = false
+let gameOver = true
 let verticalMatch = false
 let horizontalMatch = false
 let addNew = true
@@ -61,9 +65,10 @@ let count = 0
 let livesLost = 0
 
 function loadIn() {
+    resetVolume()
+    $("#volumeBtn").fadeIn()
     $("#game-title").fadeIn(1500, function(){
         okWav.currentTime = 0
-        okWav.volume = 0.7
         okWav.play()
         $("#barf-gif").fadeIn(1500, function(){
             $("#start-button").fadeIn(500)
@@ -72,6 +77,46 @@ function loadIn() {
     introMusic()
     gameScreen.style.visibility = "visible"
     playBtn.style.display = "none"
+}
+
+let mutedSound = false
+
+function resetVolume() {
+    introWav.volume = 0.3
+    okWav.volume = 0.7
+    groundWav.volume = 1
+    jumpWav.volume = 0.5
+    replayWav.volume = 0.8
+    lvlWav.volume = 0.3
+    overWav.volume = 0.8
+    owWav.volume = 0.7
+    letsGo.volume = 1
+    runWav.volume = 1
+    landWav.volume = 1
+    restartWav.volume = 1
+}
+
+function muting() {
+    if (!mutedSound) {
+        console.log("mute")
+        introWav.volume = 0
+        okWav.volume = 0
+        groundWav.volume = 0
+        jumpWav.volume = 0
+        replayWav.volume = 0
+        lvlWav.volume = 0
+        overWav.volume = 0
+        owWav.volume = 0
+        letsGo.volume = 0
+        runWav.volume = 0
+        landWav.volume = 0
+        restartWav.volume = 0
+        mutedSound = true
+    } else {
+        console.log("unmute")
+        resetVolume()
+        mutedSound = false
+    }
 }
 
 
@@ -143,7 +188,7 @@ function newGame() {
 
 function reloadGame() {
     let barfNoise = Math.floor(Math.random() * 7)
-    let restartWav = new Audio('./sounds/barfnoise' + barfNoise + '.wav')
+    restartWav.src = './sounds/barfnoise' + barfNoise + '.wav'
     restartWav.currentTime = 0
     setTimeout(restartWav.play(), 500)
     $("#againT").fadeOut()
@@ -178,30 +223,27 @@ function runSound() {
 
 function groundSound() {
     groundNum = Math.floor((Math.random() * 3) + 1)
-    let groundWav = new Audio('./sounds/land' + groundNum + '.wav')
+    groundWav.src = './sounds/land' + groundNum + '.wav'
     groundWav.currentTime = 0
-    groundWav.volume = 1
     groundWav.play()
 }
 
+
 function jumpSound() {
     jumpNum = Math.floor((Math.random() * 7) + 1)
-    let jumpWav = new Audio('./sounds/jump' + jumpNum + '.wav')
+    jumpWav.src = './sounds/jump' + jumpNum + '.wav'
     jumpWav.currentTime = 0
-    jumpWav.volume = 0.5
     jumpWav.play()
 }
 
 function levelMusic() {
     lvlWav.currentTime = 0
-    lvlWav.volume = 0.3
     lvlWav.play()
     lvlWav.loop = true
 }
 
 function introMusic() {
     introWav.currentTime = 0
-    introWav.volume = 0.3
     introWav.play()
     introWav.loop=true
 }
@@ -224,39 +266,27 @@ function titleBarfFalls () {
 
 let dblJump = false
 
-gameScreen.addEventListener('touchstart', (e) => {
+document.addEventListener('touchstart', (e) => {
     if (e.repeat) { return 
     } else if (!gameOver) {
-    if (dblJump != false) {
-    barfTallJump()
-    dblJump = false
-    flightTime = 200
-  } else {
-    barfShortJump()
-    dblJump = true
-    dblJump = setTimeout('dblJump = false', 250);
-    flightTime = 150
-  }
-  setTimeout(barfFall, (flightTime + 80))
+        if (dblJump != false) {
+        barfTallJump()
+        dblJump = false
+        flightTime = 200
+        fallSmall = false
+    } else {
+        barfShortJump()
+        dblJump = true
+        dblJump = setTimeout('dblJump = false', 250);
+        flightTime = 150
+        fallSmall = true
+        fallSmall = setTimeout('fallSmall = false', 250);
+    }
+    if (fallSmall){
+        setTimeout(barfFall, (flightTime + 80))
+    }
     }
 });
-
-// document.addEventListener("keydown", (e) => {
-//     if (e.repeat) { return }
-//     if (dblJump != false && e.key ==="w") {
-//         barfTallJump()
-//         dblJump = false
-//         flightTime = 200
-//       } else if (e.key ==="w") {
-//         barfShortJump()
-//         dblJump = true
-//         dblJump = setTimeout('dblJump = false', 250);
-//         flightTime = 150
-//       }
-//       if (e.key === "w"){
-//       setTimeout(barfFall, (flightTime + 80))
-//       }
-// })
 
 let jumpTime = 0
 
@@ -426,9 +456,8 @@ function collisionCheck() {
         // let intersect = true
         addNew = false
         owNoise = Math.floor(Math.random() * 6)
-        let owWav = new Audio('./sounds/ow' + owNoise +'.wav')
+        owWav.src = './sounds/ow' + owNoise +'.wav'
         owWav.currentTime = 0
-        owWav.volume = 0.7
         owWav.play()
         // switch(count){
         //     case 4:
@@ -513,7 +542,6 @@ function barfDeath() {
         bottom: 75
     }, 500, 'swing', function(){
         overWav.currentTime = 0
-        overWav.volume = 0.8
         overWav.play()
         lvlWav.pause()
         $("#barf").animate({
@@ -537,7 +565,6 @@ function replayScreen() {
     $("#score").fadeIn()
     replayWav.currentTime = 0
     replayWav.play()
-    replayWav.volume = 0.8
     replayWav.loop = true
 }
 
