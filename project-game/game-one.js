@@ -53,7 +53,7 @@ againTitle.addEventListener("click", reloadGame)
 
 playBtn.addEventListener("click", loadIn)
 
-let gameOver = false
+let gameOver = true
 let verticalMatch = false
 let horizontalMatch = false
 let addNew = true
@@ -225,7 +225,8 @@ function titleBarfFalls () {
 let dblJump = false
 
 document.addEventListener("keydown", (e) => {
-    if (e.repeat) { return }
+    if (e.repeat) { return 
+    } else if (!gameOver) {
     if (dblJump != false && e.key ==="w") {
         barfTallJump()
         dblJump = false
@@ -239,6 +240,7 @@ document.addEventListener("keydown", (e) => {
       if (e.key === "w"){
       setTimeout(barfFall, (flightTime + 80))
       }
+    }
 })
 
 let jumpTime = 0
