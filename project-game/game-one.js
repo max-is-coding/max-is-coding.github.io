@@ -210,7 +210,7 @@ function titleBarfFalls () {
     $("#barf-gif").animate({
         top: 1400
     }, 500, 'swing', function (){
-        barfGif.style.right = "264px"
+        barfGif.style.right = "527px"
         barfGif.style.top = "-1000px"
         $("#title-room").fadeIn("3000")
         $("#barf-gif").animate({
