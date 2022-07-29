@@ -52,6 +52,8 @@ let groundWav = new Audio()
 let jumpWav = new Audio()
 let owWav = new Audio()
 let restartWav = new Audio()
+let yayWav = new Audio()
+let deathWav = new Audio()
 
 startBtn.addEventListener("click", startGame)
 againTitle.addEventListener("click", reloadGame)
@@ -65,6 +67,7 @@ let count = 0
 let livesLost = 0
 
 function loadIn() {
+    barfGif.src = "./game-images/creature-happy.gif"
     resetVolume()
     $("#volumeBtn").fadeIn()
     $("#game-title").fadeIn(1500, function(){
@@ -94,6 +97,7 @@ function resetVolume() {
     runWav.volume = 1
     landWav.volume = 1
     restartWav.volume = 1
+    deathWav.volume = 0.7
 }
 
 function muting() {
@@ -111,6 +115,7 @@ function muting() {
         runWav.volume = 0
         landWav.volume = 0
         restartWav.volume = 0
+        deathWav.volume = 0
         mutedSound = true
     } else {
         console.log("unmute")
@@ -172,6 +177,7 @@ function newGame() {
     $("#score").fadeIn()
     mrBarf.style.left = "-25px"
     mrBarf.style.bottom = "50px"
+    barfImg.src = "./game-images/creature-happy.gif"
     $("#barf").animate({
         left: "50px"
     }, 200, 'linear')
@@ -180,10 +186,15 @@ function newGame() {
     generateBaddies()
     letsGo.currentTime = 0
     letsGo.play()
+    setTimeout(srsBarf, 700)
     setTimeout(levelMusic, 550)
     collisionCheck()
     removeBaddies()
     showHearts()
+}
+
+function srsBarf() {
+    barfImg.src = "./game-images/creature-run.gif"
 }
 
 function reloadGame() {
@@ -485,15 +496,19 @@ function collisionCheck() {
         switch(livesLost) {
             case 0:
                 heartLost = heart0
+                owSound()
               break;
             case 1:
                 heartLost = heart1
+                owSound()
               break;
             case 2:
                 heartLost = heart2
+                owSound()
               break;
             case 3:
                 barfDeath()
+                deathSound()
             default:
               
           }
@@ -534,10 +549,24 @@ function showHearts () {
 
 }
 
+function owSound() {
+    owNoise = Math.floor(Math.random() * 6)
+    owWav.src = './sounds/ow' + owNoise +'.wav'
+    owWav.currentTime = 0
+    owWav.play()
+}
+
+function deathSound() {
+    deathNoise = Math.floor(Math.random() * 4)
+    deathWav.src = './sounds/death' + deathNoise +'.wav'
+    deathWav.currentTime = 0
+    deathWav.play()
+}
+
 function barfDeath() {
     gameOver = true
     $(".hearts").fadeOut()
-    $("#jumpBarf").attr("src", "./game-images/creature-hit.gif")
+    $("#jumpBarf").attr("src", "./game-images/creature-sad.gif")
     $("#barf").animate({
         bottom: 75
     }, 500, 'swing', function(){
@@ -556,6 +585,7 @@ function barfDeath() {
 }
 
 function replayScreen() {
+    barfImg.src = "./game-images/creature-sad.gif"
     gameScreen.append(gameOverTitle)
     gameScreen.append(againTitle)
     document.getElementById("score").style.right = "180px"

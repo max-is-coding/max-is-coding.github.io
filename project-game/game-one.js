@@ -52,6 +52,8 @@ let groundWav = new Audio()
 let jumpWav = new Audio()
 let owWav = new Audio()
 let restartWav = new Audio()
+let yayWav = new Audio()
+let deathWav = new Audio()
 
 runWav.classList.add("sfx", "sounds")
 landWav.classList.add("sfx", "sounds")
@@ -76,6 +78,7 @@ let count = 0
 let livesLost = 0
 
 function loadIn() {
+    barfGif.src = "./game-images/creature-happy.gif"
     resetVolume()
     $("#volumeBtn").fadeIn()
     $("#game-title").fadeIn(1500, function(){
@@ -105,6 +108,8 @@ function resetVolume() {
     runWav.volume = 1
     landWav.volume = 1
     restartWav.volume = 1
+    yayWav.volume = 1
+    deathWav.volume = 0.7
 }
 
 function muting() {
@@ -122,6 +127,8 @@ function muting() {
         runWav.volume = 0
         landWav.volume = 0
         restartWav.volume = 0
+        yayWav.volume = 0
+        deathWav.volume = 0
         mutedSound = true
         volBtn.src= "./game-images/music-icon-transp1.png"
     } else {
@@ -140,7 +147,6 @@ function muting() {
 function startGame() {
     $("#start-button").fadeOut("fast");
     $("#game-title").fadeOut("fast");
-    barfGif.src = "./game-images/creature-2.png"
     titleBarfFalls()
 }
 
@@ -184,6 +190,7 @@ function newGame() {
     $("#score").fadeIn()
     mrBarf.style.left = "-50px"
     mrBarf.style.bottom = "100px"
+    barfImg.src = "./game-images/creature-happy.gif"
     $("#barf").animate({
         left: "100px"
     }, 200, 'linear')
@@ -192,10 +199,15 @@ function newGame() {
     generateBaddies()
     letsGo.currentTime = 0
     letsGo.play()
+    setTimeout(srsBarf, 700)
     setTimeout(levelMusic, 550)
     collisionCheck()
     removeBaddies()
     showHearts()
+}
+
+function srsBarf() {
+    barfImg.src = "./game-images/creature-run.gif"
 }
 
 function reloadGame() {
@@ -259,10 +271,18 @@ function introMusic() {
     introWav.loop=true
 }
 
+function yaySound() {
+    yayNum = Math.floor(Math.random() * 3)
+    yayWav.src = './sounds/yay' + yayNum + '.wav'
+    yayWav.currentTime = 0
+    yayWav.play()
+}
+
 function titleBarfFalls () {
     $("#barf-gif").animate({
         top: 1400
     }, 500, 'swing', function (){
+        $("#barf-gif").attr("src", "./game-images/creature-2.png")
         barfGif.style.right = "527px"
         barfGif.style.top = "-1000px"
         $("#title-room").fadeIn("3000")
@@ -436,6 +456,9 @@ function generateBaddies() {
                 generateBaddies()
             }
             count++
+            if(count == 100) {
+                yaySound()
+            }
             document.getElementById('score').innerHTML = count.toString()
     }, (Math.floor(Math.random() * gap1 + gap2)))
 }
@@ -467,29 +490,6 @@ function collisionCheck() {
       if (horizontalMatch && verticalMatch && addNew){
         // let intersect = true
         addNew = false
-        owNoise = Math.floor(Math.random() * 6)
-        owWav.src = './sounds/ow' + owNoise +'.wav'
-        owWav.currentTime = 0
-        owWav.play()
-        // switch(count){
-        //     case 4:
-        //         count -= 4;
-        //         break;
-        //     case 3:
-        //         count -= 3;
-        //         break;
-        //     case 2:
-        //         count -= 2;
-        //         break;
-        //     case 1:
-        //         count -= 1;
-        //         break;
-        //     case 0:
-        //         count = 0;
-        //         break; 
-        //     default:
-        //      count -= 5
-        // }
         $("#jumpBarf").attr("src", "./game-images/creature-hit.gif")
         setTimeout(resetHit, 1000)
         setTimeout(collisionCheck, 1000)
@@ -497,15 +497,19 @@ function collisionCheck() {
         switch(livesLost) {
             case 0:
                 heartLost = heart0
+                owSound()
               break;
             case 1:
                 heartLost = heart1
+                owSound()
               break;
             case 2:
                 heartLost = heart2
+                owSound()
               break;
             case 3:
                 barfDeath()
+                deathSound()
             default:
               
           }
@@ -546,10 +550,24 @@ function showHearts () {
 
 }
 
+function owSound() {
+    owNoise = Math.floor(Math.random() * 6)
+    owWav.src = './sounds/ow' + owNoise +'.wav'
+    owWav.currentTime = 0
+    owWav.play()
+}
+
+function deathSound() {
+    deathNoise = Math.floor(Math.random() * 4)
+    deathWav.src = './sounds/death' + deathNoise +'.wav'
+    deathWav.currentTime = 0
+    deathWav.play()
+}
+
 function barfDeath() {
     gameOver = true
     $(".hearts").fadeOut()
-    $("#jumpBarf").attr("src", "./game-images/creature-hit.gif")
+    $("#jumpBarf").attr("src", "./game-images/creature-sad.gif")
     $("#barf").animate({
         bottom: 150
     }, 500, 'swing', function(){
@@ -568,6 +586,7 @@ function barfDeath() {
 }
 
 function replayScreen() {
+    barfImg.src = "./game-images/creature-sad.gif"
     gameScreen.append(gameOverTitle)
     gameScreen.append(againTitle)
     document.getElementById("score").style.right = "360px"
