@@ -655,6 +655,8 @@ function resetGameCounts() {
     livesLost = 0
     stage = 0
     i = 0
+    barfGif.style.right = "500px"
+    barfGif.style.top = "70px"
     }
     spd = 1
     gap1 = 900
