@@ -11,6 +11,10 @@ let enemies = document.querySelectorAll(".bad");
 barfImg.src = "./game-images/creature-2.png"
 barfImg.id = "jumpBarf"
 
+let mapScreen = document.createElement("img")
+mapScreen.src = "./game-images/map-gif.gif"
+mapScreen.id = "map"
+
 let bgImg = document.createElement("img")
 bgImg.src = "./game-images/total-bg.png"
 bgImg.id = "background"
@@ -157,6 +161,7 @@ function muting() {
 function startGame() {
     $("#start-button").fadeOut("fast");
     $("#game-title").fadeOut("fast");
+    barfGif.src = "./game-images/creature-2.png"
     titleBarfFalls()
 }
 
@@ -176,7 +181,7 @@ function barfRunAni() {
     }, 1500, 'swing')
     setTimeout(runSound, 50)
     setTimeout(byeTitle, 1500)
-    setTimeout(newGame, 2000)
+    setTimeout(showMap, 2000)
 }
 
 function byeTitle() {
@@ -188,14 +193,15 @@ function byeTitle() {
 }
 
 function newGame() {
+    levelWon = false
     resetGameCounts()
     document.getElementById("score").style.right = "35px"
     document.getElementById("score").style.top = "-30px"
     replayWav.pause()
     winWav.pause()
-    levelWon = false
-    gameOver = false
     $("#score").fadeIn()
+    document.getElementById('score').innerHTML = count.toString()
+    gameOver = false
     mrBarf.style.left = "-50px"
     mrBarf.style.bottom = "100px"
     barfImg.src = "./game-images/creature-happy.gif"
@@ -226,10 +232,22 @@ function switchStage() {
             break;
         case 1:
             bgImg.src = "./game-images/snow-bg.png"
+            lvlWav.src = './sounds/music17.mp3'
+            i = 15
+            break;
+        case 2:
+            bgImg.src = "./game-images/desert-bg.png"
+            lvlWav.src = './sounds/music16.mp3'
+            i = 30
+            break;
+        case 3:
+            bgImg.src = "./game-images/beach-bg.png"
             lvlWav.src = './sounds/music10.mp3'
+            i = 60
             break;
         default:
-            bgImg.src = "./game-images/total-bg.png"    
+            stage = 0
+            switchStage()  
             break;
     }
 }
@@ -481,11 +499,9 @@ function generateBaddies() {
                 right: 800
             }, (baddyType.speeds * spd), 'linear')
             i++
-            if (i < 100){
-                generateBaddies()
-            }
+            generateBaddies()
             count++
-            if(count == 80 || count == 160) {
+            if(count == 50 || count == 150 || count == 300 || count == 500) {
                 endLevel()
             }
             document.getElementById('score').innerHTML = count.toString()
@@ -571,8 +587,8 @@ function showHearts () {
     gameScreen.append(heart1)
     gameScreen.append(heart2)
     if (stage == 0) {
-        for (i = 0; i < 3; i++) {
-            $("#hrt" + i).attr("src", "./game-images/heart.png")
+        for (v = 0; v < 3; v++) {
+            $("#hrt" + v).attr("src", "./game-images/heart.png")
         }
     }
     $(".hearts").fadeIn()
@@ -638,8 +654,8 @@ function resetGameCounts() {
     count = 0
     livesLost = 0
     stage = 0
-    }
     i = 0
+    }
     spd = 1
     gap1 = 900
     gap2 = 800
@@ -658,26 +674,95 @@ function endLevel() {
     levelWon = true
     barfImg.src = "./game-images/creature-happy.gif"
     mrBarf.style.bottom = "100px"
+    setTimeout(winRun, 100)
+    setTimeout(bgFadeOut, 1000)
+}
+
+function winRun() {
     $("#barf").animate({
         left: 800
     }, 2000, 'swing')
-    setTimeout(bgFadeOut, 1000)
-    setTimeout(newGame, 7000)
 }
 
 function bgFadeOut() {
-    $("#background").fadeOut(2500)
+    $("#background").fadeOut(2500, function(){
+        showMap()
+    })
     $("#fpole").fadeOut(2500)
     $("#barf").fadeOut(2000)
     $(".hearts").fadeOut(2500)
     $("#score").fadeOut(2500)
-    winSound()
-    lvlWav.pause()
+    setTimeout(pauseLvlMusic, 2500)
     stage++
+}
+
+function pauseLvlMusic() {
+    lvlWav.pause()
 }
 
 function flagAppear() {
     $("#fpole").animate({
         right: 100
     }, 1000)
+}
+
+function showMap() {
+    winSound()
+    switch (stage) {
+        case 0:
+            gameScreen.append(mapScreen)
+            barfGif.src = "./game-images/creature-talk.gif"
+            barfGif.style.right = "500px"
+            barfGif.style.top = "70px"
+            $("#barf-gif").fadeIn(1000)
+            break;
+        default:
+            $("#barf-gif").fadeIn(1000, function(){
+                mapShift()
+            })
+            break;
+    }
+    $("#map").fadeIn(1000)
+    setTimeout(hideMap, 5000)
+}
+
+function hideMap() {
+    $("#map").fadeOut(1000)
+    $("#barf-gif").fadeOut(1000, function(){
+        newGame()
+        winWav.pause()
+    })
+}
+
+function mapShift() {
+    switch (stage) {
+        case 0:
+            break;
+        case 1:
+            $("#barf-gif").animate({
+                right: 350,
+                top: 260
+            }, 1000)
+            break;
+        case 2:
+            $("#barf-gif").animate({
+                right: -50,
+                top: 180
+            }, 1000)
+            break;
+        case 3:
+            $("#barf-gif").animate({
+                right: -490,
+                top:  90
+            }, 1000)
+            break;
+        case 4:
+            $("#barf-gif").animate({
+                right: -350,
+                top: 350
+            }, 1000)
+            break;
+        default:
+
+    }
 }
