@@ -351,32 +351,31 @@ function titleBarfFalls () {
 
 let dblJump = false
 let fallSmall = false
+let jumpLock = false
+let jumpTime = 0
 
 document.addEventListener("keydown", (e) => {
     if (e.repeat) { return 
     } else if (canJump) {
-    if (dblJump != false && e.key ==="w" || dblJump != false && e.key ===" ") {
+    if (dblJump != false && e.key ==="w"|| dblJump != false && e.key ===" ") {
         barfTallJump()
         dblJump = false
         flightTime = 200
         fallSmall = false
-      } else if (e.key ==="w" || e.key === " ") {
+      } else if (e.key ==="w" && !jumpLock || e.key === " " && !jumpLock) {
         barfShortJump()
         dblJump = true
         dblJump = setTimeout('dblJump = false', 250);
         flightTime = 150
         fallSmall = true
         fallSmall = setTimeout('fallSmall = false', 250);
+        jumpLock = true
       }
       if (e.key === "w" && fallSmall || e.key === " " && fallSmall){
       setTimeout(barfFall, (flightTime + 80))
       }
     }
 })
-
-
-let jumpTime = 0
-
 
 function barfTallJump() {
     jumpSound()
@@ -395,6 +394,7 @@ function barfShortJump() {
 }
 
 function barfFall() {
+    setTimeout(resetJump, (jumpTime - 60))
     $("#barf").animate({
         bottom: 100
     }, jumpTime, 'swing')
@@ -403,6 +403,10 @@ function barfFall() {
     } else {
         setTimeout(groundSound, 230)
     }
+}
+
+function resetJump(){
+    jumpLock = false
 }
 
 // make baddies appear!

@@ -355,6 +355,7 @@ function titleBarfFalls () {
 
 let dblJump = false
 let fallSmall = false
+let jumpTime = 0
 
 document.addEventListener('touchstart', (e) => {
     if (e.repeat) { return 
@@ -364,22 +365,20 @@ document.addEventListener('touchstart', (e) => {
         dblJump = false
         flightTime = 200
         fallSmall = false
-    } else {
+    } else if (!jumpLock) {
         barfShortJump()
         dblJump = true
         dblJump = setTimeout('dblJump = false', 250);
         flightTime = 150
         fallSmall = true
         fallSmall = setTimeout('fallSmall = false', 250);
+        jumpLock = true
     }
     if (fallSmall){
         setTimeout(barfFall, (flightTime + 80))
     }
     }
 })
-
-let jumpTime = 0
-
 
 function barfTallJump() {
     jumpSound()
@@ -398,6 +397,7 @@ function barfShortJump() {
 }
 
 function barfFall() {
+    setTimeout(resetJump, (jumpTime - 60))
     $("#barf").animate({
         bottom: 50
     }, jumpTime, 'swing')
@@ -406,6 +406,10 @@ function barfFall() {
     } else {
         setTimeout(groundSound, 230)
     }
+}
+
+function resetJump(){
+    jumpLock = false
 }
 
 // make baddies appear!
