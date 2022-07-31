@@ -502,7 +502,7 @@ function generateBaddies() {
             i++
             generateBaddies()
             count++
-            if(count == 80 || count == 160) {
+            if(count == 50 || count == 150 || count == 250 || count == 400) {
                 endLevel()
             }
             document.getElementById('score').innerHTML = count.toString()
@@ -656,8 +656,8 @@ function resetGameCounts() {
     count = 0
     livesLost = 0
     stage = 0
-    barfGif.style.right = "500px"
-    barfGif.style.top = "70px"
+    barfGif.style.right = "250px"
+    barfGif.style.top = "35px"
     }
     i = 0
     spd = 1
@@ -706,7 +706,7 @@ function pauseLvlMusic() {
 
 function flagAppear() {
     $("#fpole").animate({
-        right: 100
+        right: 50
     }, 1000)
 }
 
@@ -742,26 +742,26 @@ function mapShift() {
             break;
         case 1:
             $("#barf-gif").animate({
-                right: 350,
-                top: 260
+                right: 175,
+                top: 130
             }, 1000)
             break;
         case 2:
             $("#barf-gif").animate({
-                right: -50,
-                top: 180
+                right: -25,
+                top: 90
             }, 1000)
             break;
         case 3:
             $("#barf-gif").animate({
-                right: -490,
-                top:  90
+                right: -245,
+                top:  45
             }, 1000)
             break;
         case 4:
             $("#barf-gif").animate({
-                right: -350,
-                top: 350
+                right: -175,
+                top: 175
             }, 1000)
             break;
         default:

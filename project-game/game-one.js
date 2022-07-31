@@ -501,7 +501,7 @@ function generateBaddies() {
             i++
             generateBaddies()
             count++
-            if(count == 50 || count == 150 || count == 300 || count == 500) {
+            if(count == 50 || count == 150 || count == 250 || count == 400) {
                 endLevel()
             }
             document.getElementById('score').innerHTML = count.toString()
