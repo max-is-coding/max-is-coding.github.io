@@ -404,6 +404,10 @@ function barfFall() {
     }
 }
 
+function resetJump(){
+    canJump = true
+}
+
 // make baddies appear!
     // run the function to randomise the baddy
     // if it's a floor baddy, make it appear on the floor
