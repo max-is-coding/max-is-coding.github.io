@@ -502,15 +502,25 @@ function generateBaddies() {
                 spd = 0.55
                 gap1 = 500
                 gap2 = 400
-            } else if (i >= 120) {
+            } else if (i >= 120 && i < 300) {
                 spd = 0.5
+                gap1 = 500
+                gap2 = 400
+            } else if (i >= 300) {
+                spd = 0.45
                 gap1 = 500
                 gap2 = 400
             }  
             
             switch (baddyType){
                 case baddiesList[3]:
-                    gap2 = (gap2 * 1.25)
+                    if (i > 60) {
+                        gap2 = (gap2 * 1.6)
+                    } else if (i > 120) {
+                        gap2 = (gap2 * 1.9)
+                    } else {
+                        gap2 = (gap2 * 1.3)
+                    }
                     break;
                 default:
                 break;
